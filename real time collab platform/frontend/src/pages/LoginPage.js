@@ -21,9 +21,22 @@ const LoginPage = ({ onLogin }) => {
   // Check if user is already logged in
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/dashboard');
+    const savedUser = localStorage.getItem('user');
+    if (token && savedUser) {
+      try {
+        JSON.parse(savedUser); // Validate the user data is valid JSON
+        navigate('/dashboard');
+      } catch (e) {
+        // Corrupted user data — clean up and show login
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setPageReady(true);
+      }
     } else {
+      // No valid session — clean up any stale token
+      if (token && !savedUser) {
+        localStorage.removeItem('token');
+      }
       setPageReady(true);
     }
   }, [navigate]);

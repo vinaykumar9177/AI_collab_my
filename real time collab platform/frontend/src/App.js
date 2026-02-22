@@ -753,6 +753,7 @@ function App() {
       } catch (error) {
         console.error('Error loading user:', error);
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
       }
     } else {
       const publicWs = SharedDB.getPublicWorkspaces();
@@ -785,6 +786,7 @@ function App() {
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUser(null);
     setUserWorkspaces([]);
   }, []);
